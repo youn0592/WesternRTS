@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09e77cc9a0f2864e868fd6ef769ef69, type: 3}
+  m_Name: VillagerAI
+  m_EditorClassIdentifier: 
+  AIName: Mike
+  AIPrefab: {fileID: 715279904427353637, guid: ffb7724525b0536408c69a7085aa71d0, type: 3}

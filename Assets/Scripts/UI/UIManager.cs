@@ -1,0 +1,336 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine;
+
+//Warning: Gonna need a Hazmat suit for this one.
+public class UIManager : MonoBehaviour
+{
+    public static UIManager Instance { get; private set; }
+
+    public ObjController objectController;
+    public VilliagerAI villagerAI;
+    GameManager m_gameManager;
+    TownData m_townData;
+
+
+    //Header UI
+    TextMeshProUGUI TownName;
+    TextMeshProUGUI GoldUI;
+    TextMeshProUGUI FoodUI;
+    TextMeshProUGUI WaterUI;
+    TextMeshProUGUI YearUI;
+
+    //Building Prompt UI
+    GameObject BuildingUIParent;
+    TextMeshProUGUI BuildingNameText;
+    TextMeshProUGUI BuildingStateText;
+    TextMeshProUGUI GoldGainedText;
+    TextMeshProUGUI CostText;
+    TMP_InputField NameChangePrompt;
+
+    //AI Prompt UI
+    GameObject AIUIParent;
+    TextMeshProUGUI AINameText;
+    TextMeshProUGUI AIAgeText;
+    TextMeshProUGUI AIFoodText;
+    TextMeshProUGUI AIWaterText;
+    TMP_Dropdown AIDropdown;
+
+    GameObject HouseButton;
+
+    GameObject NamePanel;
+    GameObject ChangeNamePanel;
+    GameObject NameError;
+    GameObject EconomyPanel;
+
+    GameObject UI_NEGPanel;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        Instance = this;
+
+        m_gameManager = GameObject.Find("_GAMEMANAGER_").GetComponent<GameManager>();
+        m_townData = GameObject.Find("_GAMEMANAGER_").GetComponent<TownData>();
+
+        //Building UI Finders
+        BuildingUIParent = GameObject.Find("Building UI");
+        BuildingNameText = GameObject.Find("Building Name").GetComponent<TextMeshProUGUI>();
+        BuildingStateText = GameObject.Find("State Value").GetComponent<TextMeshProUGUI>();
+        GoldGainedText = GameObject.Find("GG Value").GetComponent<TextMeshProUGUI>();
+        CostText = GameObject.Find("Cost Value").GetComponent<TextMeshProUGUI>();
+
+        //Header UI Finders
+        TownName = GameObject.Find("Town Name").GetComponent<TextMeshProUGUI>();
+        GoldUI = GameObject.Find("Gold Amount").GetComponent<TextMeshProUGUI>();
+        FoodUI = GameObject.Find("Food Amount").GetComponent<TextMeshProUGUI>();
+        WaterUI = GameObject.Find("Water Amount").GetComponent<TextMeshProUGUI>();
+        YearUI = GameObject.Find("Year UI").GetComponent<TextMeshProUGUI>();
+
+        //AI UI Finders
+        AIUIParent = GameObject.Find("AI UI");
+        AINameText = GameObject.Find("AI Name").GetComponent<TextMeshProUGUI>();
+        AIAgeText = GameObject.Find("Age Value").GetComponent<TextMeshProUGUI>();
+        AIFoodText = GameObject.Find("Food Value").GetComponent<TextMeshProUGUI>();
+        AIWaterText = GameObject.Find("Water Value").GetComponent<TextMeshProUGUI>();
+        AIDropdown = GameObject.Find("AI_Building_Dropdown").GetComponent<TMP_Dropdown>();
+
+        //For Testing Purposes
+        HouseButton = GameObject.Find("House");
+
+        //Misc UI Finders
+        NameChangePrompt = GameObject.Find("ChangeName Prompt").GetComponent<TMP_InputField>();
+        NamePanel = GameObject.Find("Name Panel");
+        ChangeNamePanel = GameObject.Find("Change Name Panel");
+        NameError = GameObject.Find("Name Error");
+        UI_NEGPanel = GameObject.Find("NEGPanel");
+        EconomyPanel = GameObject.Find("Economy Panel");
+
+        BuildingUIParent.SetActive(false);
+        AIUIParent.SetActive(false);
+        ChangeNamePanel.SetActive(false);
+        NameError.SetActive(false);
+        UI_NEGPanel.SetActive(false);
+        EconomyPanel.SetActive(false);
+        //HouseButton.SetActive(false);
+    }
+
+    public void UpdateTownName()
+    {
+        if (TownName == null || m_gameManager == null)
+        {
+            Debug.LogError("Town name or Game Manager were null");
+            return;
+        }
+
+        TownName.text = m_gameManager.GetTownName();
+    }
+
+    public void UpdateGold()
+    {
+        if (GoldUI == null || m_townData == null)
+        {
+            Debug.LogError("Gold UI or TownData Was null");
+            return;
+        }
+
+        GoldUI.text = ": " + m_townData.GetCurrentGold() + "/" + m_townData.GetMaxGold();
+
+    }
+
+    public void UpdateDMY()
+    {
+        if (YearUI == null)
+        {
+            Debug.LogError("Year UI was null");
+            return;
+        }
+
+        YearUI.text = "D: " + m_gameManager.GetTimeManager().GetDay().ToString("00") + "/" + "M: " + m_gameManager.GetTimeManager().GetMonth().ToString("00") + "/" + "Y: " + m_gameManager.GetTimeManager().GetYear().ToString("00");
+
+    }
+
+    public void UpdateFood()
+    {
+        if (FoodUI == null || m_townData == null)
+        {
+            Debug.LogError("FoodUI or TownData was null");
+            return;
+        }
+
+        FoodUI.text = ": " + m_townData.GetCurrentFood() + "/" + m_townData.GetMaxFood();
+    }
+
+    public void UpdateWater()
+    {
+        if (WaterUI == null || m_townData == null)
+        {
+            Debug.LogError("WaterUI or TownData were null");
+            return;
+        }
+
+        WaterUI.text = ": " + m_townData.GetCurrentWater() + "/" + m_townData.GetMaxWater();
+    }
+
+    public void OnBuildingClicked()
+    {
+        if (!BuildingUIParent)
+        {
+            Debug.LogError("BuildingUIParent Was Null");
+            return;
+        }
+        if (BuildingUIParent.activeSelf == false) BuildingUIParent.SetActive(true);
+
+        UpdateBuildingInfo();
+    }
+    public void UpdateBuildingInfo()
+    {
+        if (objectController == null) return;
+        if (!BuildingNameText || !GoldGainedText || !CostText || !BuildingStateText)
+        {
+            Debug.LogError("A UI Element for Buildings was null");
+            return;
+        }
+
+
+        BuildingNameText.fontSize = 30;
+        BuildingNameText.text = objectController.buildingName;
+        if (BuildingNameText.text.Length > 14)
+        {
+            int sizeDeduction = 0;
+            for (int i = 0; i < BuildingNameText.text.Length; ++i)
+            {
+                if (i % 2 == 0)
+                {
+                    ++sizeDeduction;
+                }
+            }
+
+            BuildingNameText.fontSize -= sizeDeduction;
+        }
+
+        string state = objectController.GetBuildingData().E_BuildingState.ToString();
+        string goldGain = objectController.GetBuildingData().GetGoldPerCycle().ToString();
+        string cost = objectController.GetBuildingData().GetGoldCost().ToString();
+
+        BuildingStateText.text = state;
+        GoldGainedText.text = goldGain;
+        CostText.text = cost;
+    }
+
+    public void OnAIClicked()
+    {
+        if (!AIUIParent)
+        {
+            Debug.LogError("AIUIParent was Null");
+            return;
+        }
+        if (AIUIParent.activeSelf == false) AIUIParent.SetActive(true);
+
+        UpdateAIInfo();
+    }
+    public void UpdateAIInfo()
+    {
+        if (villagerAI == null) return;
+        if (!AINameText || !AIAgeText || !AIFoodText || !AIWaterText)
+        {
+            Debug.LogError("An AI Element was Null");
+            return;
+        }
+
+        AINameText.fontSize = 30;
+        AINameText.text = villagerAI.AIName;
+
+        string water = villagerAI.GetWater().ToString();
+        string food = villagerAI.GetFood().ToString();
+        string age = villagerAI.GetVillagerAge().ToString();
+
+        AIAgeText.text = age;
+        AIWaterText.text = water;
+        AIFoodText.text = food;
+
+        UpdateAIDropdownContents();
+
+    }
+
+    public void UpdateAIDropdownContents()
+    {
+        if (!AIDropdown)
+        {
+            Debug.LogError("AIDropdown was null");
+        }
+
+        AIDropdown.ClearOptions();
+
+        List<string> BuildingList = new List<string>();
+        BuildingList.Add(villagerAI.WorkBuildingData.buildingName);
+        for (int i = 0; i < m_gameManager.GetWorkerlessBuildings().Count; i++)
+        {
+            BuildingList.Add(m_gameManager.GetWorkerlessBuildings()[i].buildingName);
+        }
+
+        AIDropdown.AddOptions(BuildingList);
+    }
+
+    public void OnDeselect()
+    {
+        if (!BuildingUIParent || !AIUIParent)
+        {
+            Debug.LogError("BuildingParentUI or AIUIParent were null");
+            return;
+        }
+
+        BuildingUIParent.SetActive(false);
+        AIUIParent.SetActive(false);
+    }
+    public void SelectedNameChangePrompt()
+    {
+        if (NameChangePrompt == null || BuildingNameText == null)
+        {
+            Debug.LogError("Name Change prompt or Building Name GUI were null");
+            return;
+        }
+
+        NameChangePrompt.text = BuildingNameText.text;
+
+    }
+
+    public void OnNameCancelled()
+    {
+        if (NameChangePrompt == null || BuildingNameText == null || NameError == null)
+        {
+            Debug.LogError("Name Change prompt or Building Name GUI were null");
+            return;
+        }
+
+        NameError.SetActive(false);
+        ChangeNamePanel.SetActive(false);
+        NamePanel.SetActive(true);
+    }
+
+    public void OnNameChanged()
+    {
+        if (NameChangePrompt == null || BuildingNameText == null || NameError == null)
+        {
+            Debug.LogError("Name Change prompt or Building Name GUI were null");
+            return;
+        }
+
+        if (NameChangePrompt.text.Length > 29)
+        {
+            NameError.SetActive(true);
+            return;
+        }
+
+
+        objectController.buildingName = NameChangePrompt.text;
+        NameError.SetActive(false);
+        ChangeNamePanel.SetActive(false);
+        NamePanel.SetActive(true);
+        OnBuildingClicked();
+    }
+
+    public void PlaceObject(int index)
+    {
+        Test.Instance.SetPlaceableObj(index);
+    }
+
+    public void NotEnoughGold()
+    {
+        UI_NEGPanel.SetActive(true);
+    }
+
+    public void SetEconomyPanel()
+    {
+        EconomyPanel.SetActive(!EconomyPanel.activeInHierarchy);
+    }
+
+    public void EnableHouse(bool bSetHouse)
+    {
+        //HouseButton.SetActive(bSetHouse);
+    }
+
+}
