@@ -30,7 +30,7 @@ public class TimeManager : MonoBehaviour
     ETImeSpeed m_TimeSpeed;
 
     [SerializeField]
-    int timePerDay;
+    public int timePerDay;
 
     // Start is called before the first frame update
     void Start()

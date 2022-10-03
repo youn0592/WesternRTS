@@ -119,6 +119,12 @@ public class Test : MonoBehaviour
 
         }
 
+        //temp code for a Delete feature
+        //if (Input.GetKey(KeyCode.P))
+        //{
+        //    bCanDelete = !bCanDelete;
+        //}
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             dir = BuildingObjectScriptable.GetNextDir(dir);

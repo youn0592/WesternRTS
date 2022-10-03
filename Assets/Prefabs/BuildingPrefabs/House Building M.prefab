@@ -266,6 +266,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingName: House
+  openTime: 0
+  closeTime: 0
   buildingCost: 1
   goldPerCycle: 0
   morale: 0

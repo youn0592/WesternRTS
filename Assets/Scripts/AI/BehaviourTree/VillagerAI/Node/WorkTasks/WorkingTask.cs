@@ -7,15 +7,18 @@ public class WorkingTask : Node
 {
     bool bFirstCall = true;
     VilliagerAI villager;
+    TimeManager timeManager;
     BuildingData buildingData;
+    int WorkMonth = 0;
     public WorkingTask(VilliagerAI villagerAI)
     {
         villager = villagerAI;
+        timeManager = VillageBT.gameManager.GetTimeManager();
     }
 
     public override NodeState Eval()
     {
-        if(bFirstCall)
+        if(bFirstCall && WorkMonth != timeManager.GetMonth())
         {
             villager.SetAtAWork(true);
             bFirstCall = false;
@@ -24,9 +27,11 @@ public class WorkingTask : Node
         //Again, Hacky Code for temp use.
         buildingData = villager.WorkBuilding.GetComponent<BuildingData>();
 
-        if(VillageBT.gameManager.GetTimeManager().GetDay() >= buildingData.closeTime)
+        if(timeManager.GetDay() >= buildingData.closeTime && WorkMonth != timeManager.GetMonth())
         {
             villager.SetAtAWork(false);
+            WorkMonth = timeManager.GetMonth();
+            bFirstCall = true;
             return state = NodeState.Success;
         }
 

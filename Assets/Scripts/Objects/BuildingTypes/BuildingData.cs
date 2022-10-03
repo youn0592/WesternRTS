@@ -78,6 +78,8 @@ public class BuildingData : MonoBehaviour
 
     bool bIsPlaced = false;
 
+    GameObject m_Lighting;
+
     private void Start()
     {
         //m_gameManager = GameManager.instance;
@@ -90,16 +92,20 @@ public class BuildingData : MonoBehaviour
         m_gameManager = GameManager.instance;
         m_timeManager = m_gameManager.GetTimeManager();
         m_AIManager = m_gameManager.GetAIManager();
+        m_Lighting = transform.Find("Lighting").gameObject;
+        m_Lighting.SetActive(false);
         E_BuildingState = EBuildingState.Closed;
         bIsPlaced = true;
         SetEvents();
     }
 
     //Getters
+    #region Getters
     public int GetGoldIncrease() { return goldIncrease; }
     public int GetGoldPerCycle() { return goldPerCycle; }
     public int GetGoldCost() { return buildingCost; }
     public EBuildings GetBuildingType() { return E_buildingType; }
+    #endregion
 
     public void SetEvents()
     {
@@ -129,15 +135,26 @@ public class BuildingData : MonoBehaviour
             case EBuildings.House:
                 SpawnAI();
                 gameObject.tag = "House";
+                E_BuildingState = EBuildingState.Open;
                 break;
         }
 
+        m_timeManager.OnDayChanged += ManageLights;
         m_timeManager.OnWeekChanged += CollectResources;
+
     }
 
+    public void SetOperationState(EBuildingState buildingState)
+    {
+        if (E_buildingType == EBuildings.House) return;
+
+        this.E_BuildingState = buildingState;
+    }
+
+    #region ResourceCollectors  
     public void CollectResources()
     {
-        if(E_BuildingState == EBuildingState.Closed) return;
+        if (E_BuildingState == EBuildingState.Closed) return;
         if (ResourceType != null)
         {
             ResourceType();
@@ -145,13 +162,6 @@ public class BuildingData : MonoBehaviour
 
         m_gameManager.GetUIManager().UpdateBuildingInfo();
     }
-
-    public void SetOperationState(EBuildingState buildingState)
-    {
-        this.E_BuildingState = buildingState;
-    }
-
-
     private void CollectGold()
     {
         //if (E_BuildingState == EBuildingState.Closed) return;
@@ -170,6 +180,8 @@ public class BuildingData : MonoBehaviour
         m_gameManager.GetTownData().UpdateCurrentWater(waterPerCycle);
     }
 
+    #endregion
+
     private void SpawnAI()
     {
         //Transform SP = transform.Find("AISpawn");
@@ -183,6 +195,29 @@ public class BuildingData : MonoBehaviour
 
     }
 
+    private void ManageLights()
+    {
+        if (m_Lighting == null)
+        {
+            Debug.LogError("Lighting was null");
+            return;
+        }
+
+        if(E_buildingType == EBuildings.Bank)
+        {
+            Debug.Log(name + ": " + E_BuildingState);
+        }
+
+        if (m_timeManager.GetMonth() >= 7 && m_Lighting.activeInHierarchy == false && E_BuildingState == EBuildingState.Open)
+        {
+            m_Lighting.SetActive(true);
+        }
+        if (m_timeManager.GetMonth() < 7 && m_Lighting.activeInHierarchy == true || E_BuildingState == EBuildingState.Closed)
+        {
+            m_Lighting.SetActive(false);
+        }
+    }
+
     private void OnDestroy()
     {
         if (bIsPlaced == true)
@@ -193,6 +228,7 @@ public class BuildingData : MonoBehaviour
             m_timeManager.OnWeekChanged -= CollectResources;
         }
     }
+
 
     #region Editor
 #if UNITY_EDITOR
