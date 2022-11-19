@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9acf656c28166034092707458d871f69, type: 3}
   m_Name: LongBuilding
   m_EditorClassIdentifier: 
-  buildingName: Long Building
+  buildingName: Farm Building
   prefab: {fileID: 3860489146137868986, guid: 0fa0aec5759d95949a8719ceee32de0b, type: 3}
   visual: {fileID: 3860489146137868986, guid: 0fa0aec5759d95949a8719ceee32de0b, type: 3}
   height: 2

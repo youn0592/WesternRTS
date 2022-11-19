@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 808313210093758901}
   - component: {fileID: 8591751219994226213}
   - component: {fileID: 125683036011122362}
+  - component: {fileID: 5257464367087925491}
   m_Layer: 0
   m_Name: Cube (12)
   m_TagString: Untagged
@@ -215,6 +216,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608638218421343930}
   m_Mesh: {fileID: 4300002, guid: a65c008a8798fce4a9ec86bc4550e9b7, type: 3}
+--- !u!114 &5257464367087925491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608638218421343930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acc077d6572ceb8479822d3cd19c7fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainColorList:
+  - {r: 0.6627451, g: 0.48235294, b: 0.16470589, a: 0}
+  - {r: 0.7647059, g: 0.44705883, b: 0, a: 0}
+  - {r: 0.27450982, g: 0.15294118, b: 0, a: 0}
+  - {r: 0.7058824, g: 0.5686275, b: 0.31764707, a: 0}
+  secondaryColorList:
+  - {r: 0.3882353, g: 0.1882353, b: 0, a: 0}
+  - {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 0}
+  - {r: 0.7294118, g: 0.2784314, b: 0.23921569, a: 0}
 --- !u!1 &3140909320735019447
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,9 +307,9 @@ MonoBehaviour:
   buildingName: Water Well
   openTime: 10
   closeTime: 22
-  buildingCost: 200
+  buildingCost: 1
   goldPerCycle: 300
-  morale: 0
+  moraleCost: 0
   crime: 0
   goldIncrease: 0
   foodIncrease: 0
@@ -295,6 +317,8 @@ MonoBehaviour:
   waterCost: 0
   waterIncrease: 0
   waterPerCycle: 5
+  moraleOffered: 0
+  crimePerCycle: 0
   E_buildingType: 4
   AIType: {fileID: 0}
   BuildingAI: {fileID: 0}

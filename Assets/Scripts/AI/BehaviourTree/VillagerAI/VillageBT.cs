@@ -13,6 +13,7 @@ public class VillageBT : BTree
 
     public static int foodAmount = 5;
     public static int waterAmount = 5;
+    public static float moraleAmount = 20.0f; //Temp code, should move to the Saloon.
     public static bool bEnabled = false;
 
     protected override Node SetupTree()
@@ -29,6 +30,8 @@ public class VillageBT : BTree
             new Sequence(new List<Node> { new CheckForFoodTask(villager), new GoToStorageTask(transform, villager, VillagerRenderer), new EatTask(villager) }),
             //Task for going to work
             new Sequence(new List<Node> { new CheckForWorkTask(villager), new GoToWorkTask(transform, villager, VillagerRenderer), new WorkingTask(villager)}),
+            //Task for finding Entertainment
+            new Sequence(new List<Node> {new CheckForEntertainmentTask(villager), new GoToEntertainmentTask(transform, villager, VillagerRenderer), new BecomeEntertainedTask(villager)}),
             //Task for Going Home
             new Sequence(new List<Node> { new CheckForHomeTask(villager), new GoToHomeTask(transform, villager, VillagerRenderer), new SleepTask(villager)})
             //Task for patroling.

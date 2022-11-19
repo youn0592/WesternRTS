@@ -270,7 +270,7 @@ MonoBehaviour:
   closeTime: 0
   buildingCost: 1
   goldPerCycle: 0
-  morale: 0
+  moraleCost: 0
   crime: 0
   goldIncrease: 0
   foodIncrease: 0
@@ -278,6 +278,8 @@ MonoBehaviour:
   waterCost: 0
   waterIncrease: 0
   waterPerCycle: 0
+  moraleOffered: 0
+  crimePerCycle: 0
   E_buildingType: 5
   AIType: {fileID: 0}
   BuildingAI: {fileID: 0}
@@ -826,6 +828,7 @@ GameObject:
   - component: {fileID: 3686418483355921979}
   - component: {fileID: 3686418483355921972}
   - component: {fileID: 7461545458682520820}
+  - component: {fileID: 5388804298515338958}
   m_Layer: 0
   m_Name: Cube (12)
   m_TagString: Visual
@@ -876,7 +879,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 94d20daed8199d9459ab7e7754f3233d, type: 2}
+  - {fileID: 2100000, guid: 70100e05407f6be4f99b81665e8ff74e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -909,8 +912,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 6.31395, y: 7.9506197, z: 7.436993}
+  m_Center: {x: 0.17272082, y: 3.4753036, z: -0.60777396}
 --- !u!114 &7461545458682520820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -923,6 +926,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f93bec769636f3488c01845e8558513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5388804298515338958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2346978351590321471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acc077d6572ceb8479822d3cd19c7fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainColorList:
+  - {r: 0, g: 0.7764706, b: 1, a: 0}
+  - {r: 0.09799389, g: 0.6886792, b: 0, a: 0}
+  - {r: 0.66603625, g: 0.040628344, b: 0.7830189, a: 0}
+  - {r: 0.59822416, g: 0.6226415, b: 0, a: 0}
+  - {r: 0.6509434, g: 0.28436875, b: 0, a: 0}
+  secondaryColorList:
+  - {r: 0.3882353, g: 0.1882353, b: 0, a: 0}
+  - {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
+  - {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 0}
+  - {r: 0.1981132, g: 0.19344072, b: 0.19344072, a: 0}
+  - {r: 0.6132076, g: 0, b: 0, a: 0}
 --- !u!1 &2703275221784932368
 GameObject:
   m_ObjectHideFlags: 0

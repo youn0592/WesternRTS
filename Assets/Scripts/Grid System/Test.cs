@@ -10,12 +10,13 @@ public class Test : MonoBehaviour
     public static Test Instance { get; private set; }
 
     GameManager gameManager;
+    UIManager uiManager;
 
     [SerializeField]
     private List<BuildingObjectScriptable> placeableObjectList;
     private BuildingObjectScriptable placeableObject;
     private BuildingObjectScriptable.Dir dir = BuildingObjectScriptable.Dir.Down;
-    private bool bCanDelete = true;
+    private bool bCanDelete = false;
 
     public event EventHandler OnSelectedChanged;
     public event EventHandler OnObjectPlaced;
@@ -38,9 +39,10 @@ public class Test : MonoBehaviour
         placeableObject = null;
 
         gameManager = GameObject.Find("_GAMEMANAGER_").GetComponent<GameManager>();
-        if (gameManager == null)
+        uiManager = GameObject.Find("_UIMANAGER_").GetComponent<UIManager>();
+        if (gameManager == null || uiManager == null)
         {
-            Debug.LogError("GameManager was not found");
+            Debug.LogError("GameManager or UIManager was not found");
         }
     }
 
@@ -119,7 +121,7 @@ public class Test : MonoBehaviour
 
         }
 
-        //temp code for a Delete feature
+        ////temp code for a Delete feature
         //if (Input.GetKey(KeyCode.P))
         //{
         //    bCanDelete = !bCanDelete;
@@ -137,7 +139,24 @@ public class Test : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.Alpha4)) { placeableObject = placeableObjectList[3]; RefreshSelectedObjectType(); bCanDelete = true; }
 
         if (Input.GetKeyDown(KeyCode.Escape)) { DeselectObjectType(); bCanDelete = false; }
+
+        uiManager.ActivateDeletePanel(bCanDelete);
     }
+
+
+    //Delete State Getters and Setters.
+    public void SetDeleteState()
+    {
+        bCanDelete = !bCanDelete;
+    }
+    public void SetDeleteState(bool bDeleteState)
+    {
+        bCanDelete = bDeleteState;
+    }
+    public bool GetDeleteState()
+    {
+        return bCanDelete;
+    }    
 
     public void SetPlaceableObj(int index)
     {

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Barn_02
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 22f34a95e8af05343b022550bebebc8e, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -20,12 +20,28 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainMaskTex:
+        m_Texture: {fileID: 2800000, guid: b9c2ace3e6eb0334b8242d3d15769ca1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 6dfc325c10733e94f808b3bb06981fc0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 2800000, guid: b9c2ace3e6eb0334b8242d3d15769ca1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SecondaryMaskTex:
+        m_Texture: {fileID: 2800000, guid: 19bc058e665a8f2428512f5d3b87a599, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Glossiness: 0
+    - _Metallic: 0.489
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorMain: {r: 0.65882355, g: 0.31764707, b: 0, a: 1}
+    - _ColorSecondary: {r: 0.38823533, g: 0.18823531, b: 0, a: 1}
   m_BuildTextureStacks: []

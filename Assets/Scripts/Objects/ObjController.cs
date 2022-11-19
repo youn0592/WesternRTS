@@ -69,6 +69,7 @@ public class ObjController : MonoBehaviour
     public BuildingData GetBuildingData() { return buildingData; }
     public void DestroySelf()
     {
+        buildingData.BuildingAI = null;
         Destroy(gameObject);
     }
 }

@@ -207,6 +207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingName: Water Well
+  openTime: 0
+  closeTime: 0
   buildingCost: 700
   goldPerCycle: 300
   morale: 0
@@ -217,6 +219,8 @@ MonoBehaviour:
   waterCost: 0
   waterIncrease: 0
   waterPerCycle: 5
+  moralePerCycle: 0
+  crimePerCycle: 0
   E_buildingType: 4
   AIType: {fileID: 0}
   BuildingAI: {fileID: 0}

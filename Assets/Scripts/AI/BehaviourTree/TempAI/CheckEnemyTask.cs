@@ -18,7 +18,7 @@ public class CheckEnemyTask : Node
         object t = GetData("target");
         if (t == null)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, VilliagerBT.FovRange, enemyLayer);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, TempBT.FovRange, enemyLayer);
 
             if(colliders.Length > 0)
             {

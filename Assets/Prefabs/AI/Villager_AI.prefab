@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 715279904427353633}
   - component: {fileID: 715279904427353638}
   - component: {fileID: 715279904427353639}
-  - component: {fileID: 715279904427353635}
   - component: {fileID: 715279904427353634}
+  - component: {fileID: -5909958517343578014}
+  - component: {fileID: 715279904427353635}
+  - component: {fileID: 8747393201588073490}
   - component: {fileID: 2664448550650706833}
   m_Layer: 0
   m_Name: Villager_AI
@@ -101,21 +103,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &715279904427353635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715279904427353637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f70c2f1fb4fbd3409d64f5c458641b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints: []
-  villager: {fileID: 0}
-  VillagerRenderer: {fileID: 0}
 --- !u!114 &715279904427353634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +121,51 @@ MonoBehaviour:
   MaxFood: 10
   CurrentWater: 4
   MaxWater: 10
+  currentMorale: 100
+  maxMorale: 100
+  currentCrimeRate: 5
+  maxCrimeRate: 100
   Birthday: 
+--- !u!114 &-5909958517343578014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715279904427353637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ab67d08810489c4b9312c0727998894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &715279904427353635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715279904427353637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f70c2f1fb4fbd3409d64f5c458641b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints: []
+  villager: {fileID: 0}
+  VillagerRenderer: {fileID: 0}
+--- !u!114 &8747393201588073490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715279904427353637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f903641cf17a6748827ab1ea4d7acfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints: []
 --- !u!114 &2664448550650706833
 MonoBehaviour:
   m_ObjectHideFlags: 0

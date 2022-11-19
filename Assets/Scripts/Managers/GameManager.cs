@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,12 +18,17 @@ public class GameManager : MonoBehaviour
 
     GameState currentState = GameState.Default;
 
+    public event Action OnBuildingPlaced;
+    public event Action OnBuildingDestroyed;
+
     UIManager m_UIManager;
     TimeManager m_TimeManager;
     TownData m_TownData;
     AIManager m_AIManager;
     
     List<BuildingData> m_BuildingList;
+
+    float m_townMorale;
 
     private void Start()
     {
@@ -68,13 +74,23 @@ public class GameManager : MonoBehaviour
 
         newBuilding.BuildingPlaced();
         m_BuildingList.Add(newBuilding);
-        CheckForBuildings();
+
+        if(OnBuildingPlaced != null)
+        {
+            OnBuildingPlaced();
+        }
+        //CheckForBuildings();
     }
 
     public void RemoveBuildingFromList(BuildingData buildingToBeRemoved)
     {
         m_BuildingList.Remove(buildingToBeRemoved);
-        CheckForBuildings();
+
+        if(OnBuildingDestroyed != null)
+        {
+            OnBuildingDestroyed();
+        }
+        //CheckForBuildings();
     }
 
     void CheckForBuildings()
@@ -124,6 +140,38 @@ public class GameManager : MonoBehaviour
         m_UIManager.UpdateGold();
     }
 
+    public float GetTownMorale()
+    {
+        if(m_AIManager == null || m_UIManager == null)
+        {
+            Debug.LogError("AI Manager or UI Manager were null");
+            return -999.0f;
+        }
+        m_townMorale = 0;
+
+        if(m_AIManager.GetVillagerList().Count == 0)
+        {
+            return -999.0f;
+        }
+
+        for(int i = 0; i < m_AIManager.GetVillagerList().Count; i++)
+        {
+            m_townMorale += m_AIManager.GetVillagerList()[i].GetCurrentMorale();
+        }
+        m_townMorale /= m_AIManager.GetVillagerList().Count;
+
+        if(m_townMorale <= 0.0f)
+        {
+            m_townMorale = 0.0f;
+        }
+        else if(m_townMorale >= 100.0f)
+        {
+            m_townMorale = 100.0f;
+        }
+
+        return m_townMorale;
+    }
+
     public string GetTownName(){ return m_TownData.GetTownName(); }
 
     public TownData GetTownData(){ return m_TownData; }
@@ -136,6 +184,17 @@ public class GameManager : MonoBehaviour
     public GameState GetGameState(){ return currentState; }
 
     public List<BuildingData> GetBuildingList(){ return m_BuildingList; }
+    public bool IsBuildingInList(EBuildings BuildingType)
+    {
+        for(int i = 0; i < m_BuildingList.Count; i++)
+        {
+            if(BuildingType == m_BuildingList[i].GetBuildingType())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public TimeManager GetTimeManager(){ return m_TimeManager; }
     public UIManager GetUIManager(){ return m_UIManager; }
     public AIManager GetAIManager(){ return m_AIManager; }

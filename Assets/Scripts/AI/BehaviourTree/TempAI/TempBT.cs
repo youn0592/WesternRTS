@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 using BehaviourTree;
-public class VilliagerBT : BTree
+public class TempBT : BTree
 {    
     public Transform[] waypoints;
     

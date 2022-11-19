@@ -17,7 +17,7 @@ public class GoToTargetTask : Node
 
         if (Vector3.Distance(transform.position, target.position) > 0.01)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, VilliagerBT.speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target.position, TempBT.speed * Time.deltaTime);
             transform.LookAt(target.position);
         }
         else

@@ -5,25 +5,25 @@ using BehaviourTree;
 
 public class DrinkTask : Node
 {
-    float i;
+    float timeAtStorage;
     int waterAmount;
     VilliagerAI villager;
     public DrinkTask(VilliagerAI villagerAI)
     {
         villager = villagerAI;
+        waterAmount = VillageBT.waterAmount;
     }
 
     public override NodeState Eval()
     {
-         i += Time.deltaTime;
+        timeAtStorage += Time.deltaTime;
 
-        if(i > 3 / VillageBT.gameManager.GetTimeManager().timeMultiplier)
+        if(timeAtStorage > 3 / VillageBT.gameManager.GetTimeManager().timeMultiplier)
         {
-            waterAmount = VillageBT.waterAmount;
             VillageBT.gameManager.GetTownData().UpdateCurrentWater(-waterAmount);
             villager.CollectWater(waterAmount);
             VillageBT.gameManager.GetUIManager().UpdateWater();
-            i = 0;
+            timeAtStorage = 0;
             parent.ClearData("Storage");
             return state = NodeState.Success;
         }

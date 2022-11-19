@@ -92,7 +92,6 @@ public class TimeManager : MonoBehaviour
         {
             OnWeekChanged();
         }
-        Debug.Log(CurrentWeek);
     }
 
     private void UpdateMonth()

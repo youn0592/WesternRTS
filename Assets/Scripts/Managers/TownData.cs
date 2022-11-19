@@ -21,11 +21,9 @@ public class TownData : MonoBehaviour
     [SerializeField]
     int m_CurrentWaterAmount, m_MaxWaterAmount;
 
+    //Morale and Crime Fields
     [SerializeField]
-    float m_CurrentMorale;
-
-    [SerializeField]
-    float m_CurrentCrime;
+    float m_CurrentMorale, m_CurrentCrime;
 
     void Start()
     {
@@ -41,10 +39,60 @@ public class TownData : MonoBehaviour
 
     void Update()
     {
-
     }
 
-    //Gold Functions
+    #region TownName Functions
+    public void SetTownName(string newName)
+    {
+        m_TownName = newName;
+    }    
+    public string GetTownName(){ return m_TownName; }
+
+    #endregion
+
+    public float UpdateCurrentMorale()
+    {
+        if(m_GameManager == null)
+        {
+            Debug.LogError("GameManager was null");
+            return 0;
+        }
+
+        List<VilliagerAI> Villagers = m_GameManager.GetAIManager().GetVillagerList();
+
+        m_CurrentMorale = 0.0f;
+
+        for(int i = 0; i < Villagers.Count; i++)
+        {
+            m_CurrentMorale += Villagers[i].GetCurrentMorale();
+        }
+
+        m_CurrentMorale /= Villagers.Count;
+
+        Debug.Log(m_CurrentMorale);
+        return m_CurrentMorale;
+    }
+    public float UpdateCurrentCrime()
+    {
+        if(m_GameManager == null)
+        {
+            Debug.LogError("Game Manager was null");
+            return 0;
+        }
+
+        List<VilliagerAI> Villagers = m_GameManager.GetAIManager().GetVillagerList();
+        m_CurrentCrime = 0.0f;
+
+        for(int i = 0; i < Villagers.Count; i++)
+        {
+            m_CurrentCrime += Villagers[i].GetCurrentCrime();
+        }
+
+        m_CurrentCrime /= Villagers.Count;
+
+        return m_CurrentCrime;
+    }
+
     #region Gold Functions
     public void UpdateCurrentGold(int amount)
     {
@@ -124,7 +172,7 @@ public class TownData : MonoBehaviour
     #endregion
 
     #region Getters
-    public string GetTownName(){ return m_TownName; }
+
     public int  GetCurrentGold(){ return m_CurrentGoldAmount; }
     public int GetMaxGold(){ return m_MaxGoldAmount; }
 

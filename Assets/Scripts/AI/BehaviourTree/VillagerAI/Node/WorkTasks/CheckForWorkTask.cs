@@ -22,12 +22,22 @@ public class CheckForWorkTask : Node
             || VillageBT.gameManager.GetTimeManager().GetDay() > buildingData.closeTime) return state = NodeState.Failure;
         object t = GetData("WorkPlace");
 
-        if (t == null)
+        if (t == null || !IsCurrentWorkplace())
         {
             parent.SetData("WorkPlace", villager.WorkBuilding);
             return state = NodeState.Success;
         }
 
         return state = NodeState.Success;
+    }
+
+    bool IsCurrentWorkplace()
+    {
+        if(parent.GetData("WorkPlace").Equals(villager.WorkBuilding))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

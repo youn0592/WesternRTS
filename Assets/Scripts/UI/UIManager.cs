@@ -5,15 +5,21 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
 
-//Warning: Gonna need a Hazmat suit for this one.
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    //Managers and Misc objects
     public ObjController objectController;
     public VilliagerAI villagerAI;
     GameManager m_gameManager;
+    TimeManager m_timeManager;
     TownData m_townData;
+    Test m_gridSystem;
+
+    [SerializeField]
+    List<Sprite> moraleSprite = new List<Sprite>();
 
 
     //Header UI
@@ -22,6 +28,7 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI FoodUI;
     TextMeshProUGUI WaterUI;
     TextMeshProUGUI YearUI;
+    Image moraleImageUI;
 
     //Building Prompt UI
     GameObject BuildingUIParent;
@@ -37,24 +44,29 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI AIAgeText;
     TextMeshProUGUI AIFoodText;
     TextMeshProUGUI AIWaterText;
+    TextMeshProUGUI AIMoraleText;
     TMP_Dropdown AIDropdown;
 
     GameObject HouseButton;
 
+    //Misc UI Objects
     GameObject NamePanel;
     GameObject ChangeNamePanel;
     GameObject NameError;
     GameObject EconomyPanel;
+    GameObject DeletePanel;
 
     GameObject UI_NEGPanel;
 
-    // Start is called before the first frame update
+    //This Function finds all UI Objects in the hirarchy to have them in code and sets if they need to be active or not
     void Start()
     {
         Instance = this;
 
         m_gameManager = GameObject.Find("_GAMEMANAGER_").GetComponent<GameManager>();
+        m_timeManager = GameObject.Find("_GAMEMANAGER_").GetComponent<TimeManager>();
         m_townData = GameObject.Find("_GAMEMANAGER_").GetComponent<TownData>();
+        m_gridSystem = GameObject.Find("Grid").GetComponent<Test>();
 
         //Building UI Finders
         BuildingUIParent = GameObject.Find("Building UI");
@@ -69,6 +81,7 @@ public class UIManager : MonoBehaviour
         FoodUI = GameObject.Find("Food Amount").GetComponent<TextMeshProUGUI>();
         WaterUI = GameObject.Find("Water Amount").GetComponent<TextMeshProUGUI>();
         YearUI = GameObject.Find("Year UI").GetComponent<TextMeshProUGUI>();
+        moraleImageUI = GameObject.Find("Morale Icon").GetComponent<Image>();
 
         //AI UI Finders
         AIUIParent = GameObject.Find("AI UI");
@@ -76,6 +89,7 @@ public class UIManager : MonoBehaviour
         AIAgeText = GameObject.Find("Age Value").GetComponent<TextMeshProUGUI>();
         AIFoodText = GameObject.Find("Food Value").GetComponent<TextMeshProUGUI>();
         AIWaterText = GameObject.Find("Water Value").GetComponent<TextMeshProUGUI>();
+        AIMoraleText = GameObject.Find("Morale Value").GetComponent<TextMeshProUGUI>();
         AIDropdown = GameObject.Find("AI_Building_Dropdown").GetComponent<TMP_Dropdown>();
 
         //For Testing Purposes
@@ -88,6 +102,7 @@ public class UIManager : MonoBehaviour
         NameError = GameObject.Find("Name Error");
         UI_NEGPanel = GameObject.Find("NEGPanel");
         EconomyPanel = GameObject.Find("Economy Panel");
+        DeletePanel = GameObject.Find("Delete Panel");
 
         BuildingUIParent.SetActive(false);
         AIUIParent.SetActive(false);
@@ -96,8 +111,11 @@ public class UIManager : MonoBehaviour
         UI_NEGPanel.SetActive(false);
         EconomyPanel.SetActive(false);
         //HouseButton.SetActive(false);
+
+        m_timeManager.OnWeekChanged += UpdateMorale;
     }
 
+    //This function allows the player to change the name of their town.
     public void UpdateTownName()
     {
         if (TownName == null || m_gameManager == null)
@@ -109,6 +127,7 @@ public class UIManager : MonoBehaviour
         TownName.text = m_gameManager.GetTownName();
     }
 
+    //This function updates the UI elements for the Gold system.
     public void UpdateGold()
     {
         if (GoldUI == null || m_townData == null)
@@ -121,6 +140,7 @@ public class UIManager : MonoBehaviour
 
     }
 
+    //This function updates the UI elements for the Day/Month/Year system.
     public void UpdateDMY()
     {
         if (YearUI == null)
@@ -133,6 +153,7 @@ public class UIManager : MonoBehaviour
 
     }
 
+    //This function updates the UI elements for the Food system.
     public void UpdateFood()
     {
         if (FoodUI == null || m_townData == null)
@@ -144,6 +165,7 @@ public class UIManager : MonoBehaviour
         FoodUI.text = ": " + m_townData.GetCurrentFood() + "/" + m_townData.GetMaxFood();
     }
 
+    //This function updates the UI elements for the Water system.
     public void UpdateWater()
     {
         if (WaterUI == null || m_townData == null)
@@ -155,6 +177,7 @@ public class UIManager : MonoBehaviour
         WaterUI.text = ": " + m_townData.GetCurrentWater() + "/" + m_townData.GetMaxWater();
     }
 
+    //This function reveals the BuildingUIPanel when a Building has been clicked on.
     public void OnBuildingClicked()
     {
         if (!BuildingUIParent)
@@ -166,6 +189,39 @@ public class UIManager : MonoBehaviour
 
         UpdateBuildingInfo();
     }
+
+    public void UpdateMorale()
+    {
+        if(m_gameManager == null || moraleImageUI == null)
+        {
+            Debug.LogError("villagerAI or GameManager or MoraleImage was null");
+            return;
+        }
+
+        float morale = m_gameManager.GetTownMorale();
+
+        switch(morale)
+        {
+            case >=65:
+                moraleImageUI.sprite = moraleSprite[1];
+                break;
+            case >=45:
+                moraleImageUI.sprite = moraleSprite[2];
+                break;
+            case >= 0:
+                moraleImageUI.sprite = moraleSprite[3];
+                break;
+            case < 0:
+                moraleImageUI.sprite = moraleSprite[0];
+                break;
+            default:
+                moraleImageUI.sprite = moraleSprite[0];
+                break;
+        }
+
+    }
+
+    //This function updates the UI elements for all the systems in the BuildingUIPanel in case something changes when the panel is open.
     public void UpdateBuildingInfo()
     {
         if (objectController == null) return;
@@ -201,6 +257,7 @@ public class UIManager : MonoBehaviour
         CostText.text = cost;
     }
 
+    //This function reveals the AIUIPanel when an AI Villager has been clicked on.
     public void OnAIClicked()
     {
         if (!AIUIParent)
@@ -212,6 +269,8 @@ public class UIManager : MonoBehaviour
 
         UpdateAIInfo();
     }
+
+    //This function updates the UI elements for all the systems in the AIUIPanel in case something changes when the panel is open.
     public void UpdateAIInfo()
     {
         if (villagerAI == null) return;
@@ -227,15 +286,18 @@ public class UIManager : MonoBehaviour
         string water = villagerAI.GetWater().ToString();
         string food = villagerAI.GetFood().ToString();
         string age = villagerAI.GetVillagerAge().ToString();
+        string morale = villagerAI.GetCurrentMorale().ToString();
 
         AIAgeText.text = age;
         AIWaterText.text = water;
         AIFoodText.text = food;
+        AIMoraleText.text = morale;
 
         UpdateAIDropdownContents();
 
     }
 
+    //This function updates the workable buildings current open for the AI.
     public void UpdateAIDropdownContents()
     {
         if (!AIDropdown)
@@ -255,6 +317,7 @@ public class UIManager : MonoBehaviour
         AIDropdown.AddOptions(BuildingList);
     }
 
+    //This function closes all panels when the player deslects off of an object.
     public void OnDeselect()
     {
         if (!BuildingUIParent || !AIUIParent)
@@ -266,6 +329,8 @@ public class UIManager : MonoBehaviour
         BuildingUIParent.SetActive(false);
         AIUIParent.SetActive(false);
     }
+
+    //This function changes the panel to allow players to change the name of a selected object.
     public void SelectedNameChangePrompt()
     {
         if (NameChangePrompt == null || BuildingNameText == null)
@@ -278,6 +343,7 @@ public class UIManager : MonoBehaviour
 
     }
 
+    //This function resets everything back to its previous state in case the player doesn't want to change the name of a selected object.
     public void OnNameCancelled()
     {
         if (NameChangePrompt == null || BuildingNameText == null || NameError == null)
@@ -291,6 +357,7 @@ public class UIManager : MonoBehaviour
         NamePanel.SetActive(true);
     }
 
+    //This changes the name of the selected object and resets all NameChangePanel settings and resets the objects UI.
     public void OnNameChanged()
     {
         if (NameChangePrompt == null || BuildingNameText == null || NameError == null)
@@ -313,21 +380,44 @@ public class UIManager : MonoBehaviour
         OnBuildingClicked();
     }
 
+    //This function is to tell the Grid System which object the Player clicked on so they can place it in the world.
     public void PlaceObject(int index)
     {
-        Test.Instance.SetPlaceableObj(index);
+        m_gridSystem.SetPlaceableObj(index);
     }
 
+    //This function causes a pop up to appear on the screen if the player doesn't have enough gold to afford the building they want to place.
     public void NotEnoughGold()
     {
         UI_NEGPanel.SetActive(true);
     }
 
+    //This function shows and hides the Extended Economy panel.
     public void SetEconomyPanel()
     {
         EconomyPanel.SetActive(!EconomyPanel.activeInHierarchy);
     }
 
+    //this function tells the GridSystem that the player clicked on the Delete button.
+    public void SetDeleteState()
+    {
+        if(m_gridSystem == null) 
+        {
+            Debug.LogWarning("Grid System was null");
+            return; 
+        }
+
+        m_gridSystem.SetDeleteState();
+        
+    }
+
+    //This function takes in a bool that sets the state of the Delete Panel.
+    public void ActivateDeletePanel(bool bPanelState)
+    {
+        DeletePanel.SetActive(bPanelState);
+    }
+
+    //This function is meant to enable the house button a Farm and Water Well has been placed.
     public void EnableHouse(bool bSetHouse)
     {
         //HouseButton.SetActive(bSetHouse);

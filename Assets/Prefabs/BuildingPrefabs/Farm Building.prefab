@@ -165,9 +165,9 @@ MonoBehaviour:
   buildingName: Farm
   openTime: 1
   closeTime: 17
-  buildingCost: 200
+  buildingCost: 1
   goldPerCycle: 300
-  morale: 0
+  moraleCost: 25
   crime: 0
   goldIncrease: 0
   foodIncrease: 0
@@ -175,6 +175,8 @@ MonoBehaviour:
   waterCost: 0
   waterIncrease: 0
   waterPerCycle: 0
+  moraleOffered: 0
+  crimePerCycle: 0
   E_buildingType: 3
   AIType: {fileID: 0}
   BuildingAI: {fileID: 0}
@@ -2353,6 +2355,7 @@ GameObject:
   - component: {fileID: 3200424123192900099}
   - component: {fileID: 7407859736881878688}
   - component: {fileID: 6774965157203487691}
+  - component: {fileID: 6210104902604451064}
   m_Layer: 0
   m_Name: Cube (12)
   m_TagString: Untagged
@@ -2425,6 +2428,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6210104902604451064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8087116107112238727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acc077d6572ceb8479822d3cd19c7fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainColorList:
+  - {r: 0.65882355, g: 0.31764707, b: 0, a: 0}
+  - {r: 0.8039216, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0.45882353, b: 0, a: 0}
+  secondaryColorList:
+  - {r: 0.3882353, g: 0.1882353, b: 0, a: 0}
+  - {r: 0.5686275, g: 0.19215687, b: 0, a: 0}
+  - {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
 --- !u!1 &8343499909497916730
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,7 +2572,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8378316499058828227}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.07, y: -4.4149737, z: 10.32}
+  m_LocalPosition: {x: -2.01, y: -4.4149737, z: 10.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

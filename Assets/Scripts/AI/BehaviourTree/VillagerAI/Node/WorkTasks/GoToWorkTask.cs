@@ -19,17 +19,17 @@ public class GoToWorkTask : Node
     public override NodeState Eval()
     {
         Transform WorkPlace = (Transform)GetData("WorkPlace");
-        Transform Position = WorkPlace.Find("LookAtPoint");
+        Transform LookAtPoint = WorkPlace.Find("LookAtPoint");
 
         if (VillagerRenderer.enabled == false)
         {
             VillagerRenderer.enabled = true;
         }
 
-        if (Vector3.Distance(m_transform.position, Position.position) >= 1)
+        if (Vector3.Distance(m_transform.position, LookAtPoint.position) >= 1)
         {
-            m_transform.position = Vector3.MoveTowards(m_transform.position, Position.position, villager.WalkSpeed * VillageBT.gameManager.GetTimeManager().timeMultiplier * Time.deltaTime);
-            m_transform.LookAt(Position);
+            m_transform.position = Vector3.MoveTowards(m_transform.position, LookAtPoint.position, villager.WalkSpeed * VillageBT.gameManager.GetTimeManager().timeMultiplier * Time.deltaTime);
+            m_transform.LookAt(LookAtPoint);
             return state = NodeState.Running;
         }
         else

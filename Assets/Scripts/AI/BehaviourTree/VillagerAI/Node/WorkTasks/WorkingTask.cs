@@ -30,6 +30,7 @@ public class WorkingTask : Node
         if(timeManager.GetDay() >= buildingData.closeTime && WorkMonth != timeManager.GetMonth())
         {
             villager.SetAtAWork(false);
+            villager.CollectMorale(-buildingData.GetMoraleCost());
             WorkMonth = timeManager.GetMonth();
             bFirstCall = true;
             return state = NodeState.Success;

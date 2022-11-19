@@ -37,6 +37,11 @@ public class AIManager : MonoBehaviour
 
     }
 
+    public List<VilliagerAI> GetVillagerList()
+    {
+        return AIList;
+    }
+
     public void SpawnAI(Transform buildingTransform, BuildingData buildingData)
     {
         GameObject Go = AIPref.AIPrefab;
@@ -49,26 +54,25 @@ public class AIManager : MonoBehaviour
         NewAI.transform.parent = AIHolder.gameObject.transform;
         VilliagerAI SpawningAI = NewAI.GetComponent<VilliagerAI>();
         SpawningAI.AIName = "Mike " + nameIncrease;
-        SpawningAI.Birthday = new int[] {m_TimeManager.GetDay(), m_TimeManager.GetMonth(), m_TimeManager.GetYear() };
+        SpawningAI.Birthday = new int[] { m_TimeManager.GetDay(), m_TimeManager.GetMonth(), m_TimeManager.GetYear() };
         //Testing
 
         AIList.Add(SpawningAI);
 
         if (SpawningAI == null) { Debug.LogError("SpawningAI was Null"); return; }
-        for (int i = 0; i < m_GameManager.GetBuildingList().Count; i++)
-        {
-            if (m_GameManager.GetBuildingList()[i].tag == "Home" || m_GameManager.GetBuildingList()[i].BuildingAI != null)
-                continue;
+        //for (int i = 0; i < m_GameManager.GetBuildingList().Count; i++)
+        //{
+        //    if (m_GameManager.GetBuildingList()[i].tag == "Home" || m_GameManager.GetBuildingList()[i].BuildingAI != null)
+        //        continue;
 
-            m_GameManager.GetBuildingList()[i].BuildingAI = SpawningAI;
-            WorkTransform = m_GameManager.GetBuildingList()[i].transform;
-            buildingData.BuildingAI = SpawningAI;
-            Debug.Log(SpawningAI + " Has a job at " + m_GameManager.GetBuildingList()[i]);
-            break;
-        }
-
-        SpawningAI.Init(buildingTransform, WorkTransform);
-        if(nameIncrease > 1)
+        //    m_GameManager.GetBuildingList()[i].BuildingAI = SpawningAI;
+        //    WorkTransform = m_GameManager.GetBuildingList()[i].transform;
+        //    Debug.Log(SpawningAI + " Has a job at " + m_GameManager.GetBuildingList()[i]);
+        //    break;
+        //}
+        buildingData.BuildingAI = SpawningAI;
+        SpawningAI.Init(buildingTransform);
+        if (nameIncrease > 1)
         {
             SpawningAI.CollectWater(3);
             SpawningAI.CollectFood(3);

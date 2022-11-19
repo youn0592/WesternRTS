@@ -107,13 +107,13 @@ TextureImporter:
       name: Morale Rating_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 127
-        width: 127
-        height: 129
+        x: 0
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 1, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -128,10 +128,10 @@ TextureImporter:
       name: Morale Rating_1
       rect:
         serializedVersion: 2
-        x: 130
-        y: 128
-        width: 126
-        height: 128
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,10 +149,10 @@ TextureImporter:
       name: Morale Rating_2
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 129
-        height: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,10 +170,10 @@ TextureImporter:
       name: Morale Rating_3
       rect:
         serializedVersion: 2
-        x: 128
+        x: 64
         y: 0
-        width: 128
-        height: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

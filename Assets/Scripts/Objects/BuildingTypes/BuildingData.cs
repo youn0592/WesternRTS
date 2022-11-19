@@ -13,7 +13,8 @@ public enum EBuildings
     Bank,
     Farm,
     WaterWell,
-    House
+    House,
+    Saloon
 }
 enum ECycleType
 {
@@ -39,7 +40,7 @@ public class BuildingData : MonoBehaviour
     int buildingCost, goldPerCycle;
 
     [SerializeField]
-    float morale, crime;
+    float moraleCost, crime;
 
     //Bank Stats
     [HideInInspector, SerializeField]
@@ -51,6 +52,9 @@ public class BuildingData : MonoBehaviour
 
     [HideInInspector, SerializeField]
     int waterIncrease, waterPerCycle;
+
+    [HideInInspector, SerializeField]
+    float moraleOffered, crimePerCycle;
 
     [SerializeField]
     EBuildings E_buildingType;
@@ -104,6 +108,7 @@ public class BuildingData : MonoBehaviour
     public int GetGoldIncrease() { return goldIncrease; }
     public int GetGoldPerCycle() { return goldPerCycle; }
     public int GetGoldCost() { return buildingCost; }
+    public float GetMoraleCost() { return moraleCost; }
     public EBuildings GetBuildingType() { return E_buildingType; }
     #endregion
 
@@ -136,6 +141,9 @@ public class BuildingData : MonoBehaviour
                 SpawnAI();
                 gameObject.tag = "House";
                 E_BuildingState = EBuildingState.Open;
+                break;
+            case EBuildings.Saloon:
+                gameObject.tag = "WorkPlace";
                 break;
         }
 
@@ -222,6 +230,7 @@ public class BuildingData : MonoBehaviour
     {
         if (bIsPlaced == true)
         {
+            m_timeManager.OnDayChanged -= ManageLights;
             m_timeManager.OnMonthChanged -= CollectGold;
             m_timeManager.OnMonthChanged -= CollectFood;
             m_timeManager.OnMonthChanged -= CollectWater;
@@ -265,6 +274,11 @@ public class BuildingData : MonoBehaviour
                 case EBuildings.House:
                     EditorGUILayout.LabelField("House Details", EditorStyles.boldLabel);
                     buildingData.AIType = (GameObject)EditorGUILayout.ObjectField("AI Type: ", buildingData.AIType, typeof(GameObject), true);
+                    break;
+                case EBuildings.Saloon:
+                    EditorGUILayout.LabelField("Saloon Details", EditorStyles.boldLabel);
+                    buildingData.moraleOffered = EditorGUILayout.FloatField("Morale Offered: ", buildingData.moraleOffered);
+                    //buildingData.crimePerCycle = EditorGUILayout.FloatField("Morale Per Cycles: ", buildingData.crimePerCycle);
                     break;
             }
 

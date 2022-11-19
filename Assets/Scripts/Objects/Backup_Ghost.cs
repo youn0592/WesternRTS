@@ -43,7 +43,15 @@ public class Backup_Ghost : MonoBehaviour
             visual.parent = transform;
             visual.localPosition = Vector3.zero;
             visual.localEulerAngles = Vector3.zero;
-            visual.GetComponentInChildren<MeshRenderer>().material = m_ghostMaterial;
+            foreach(Transform trans in visual)
+            {
+                MeshRenderer mr = trans.GetComponent<MeshRenderer>();
+                if(mr)
+                {
+                    mr.material = m_ghostMaterial;
+                }
+            }
+            //visual.GetComponentInChildren<MeshRenderer>().material = m_ghostMaterial;
             SetLayerRecursive(visual.gameObject, 11);
         }
     }
